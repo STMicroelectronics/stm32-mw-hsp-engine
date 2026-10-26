@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project>
+  <name>Validation Jenkins</name>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\valid\test_stream_buffer</path>
+    <name>fir_acc</name>
+    <ide>iar</ide>
+    <file>ewarm\fir_acc.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_acc\</path>
+    <name>fir_acc</name>
+    <ide>iar</ide>
+    <file>ewarm\fir_acc.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_acc\</path>
+    <name>fir_acc</name>
+    <ide>keil</ide>
+    <file>MDK-ARM\fir_acc.uvprojx</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\biquad_acc\</path>
+    <name>biquad_acc</name>
+    <ide>iar</ide>
+    <file>ewarm\biquad_acc.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\biquad_acc\</path>
+    <name>biquad_acc</name>
+    <ide>keil</ide>
+    <file>MDK-ARM\biquad_acc.uvprojx</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\rfft_acc\</path>
+    <name>rfft_acc</name>
+    <ide>iar</ide>
+    <file>ewarm\rfft_acc.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\rfft_acc\</path>
+    <name>rfft_acc</name>
+    <ide>keil</ide>
+    <file>MDK-ARM\rfft_acc.uvprojx</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\cfft_acc\</path>
+    <name>cfft_acc</name>
+    <ide>iar</ide>
+    <file>ewarm\cfft_acc.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\cfft_acc\</path>
+    <name>cfft_acc</name>
+    <ide>keil</ide>
+    <file>MDK-ARM\cfft_acc.uvprojx</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_seq\</path>
+    <name>fir_seq</name>
+    <ide>iar</ide>
+    <file>ewarm\fir_seq.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_seq\</path>
+    <name>fir_seq</name>
+    <ide>keil</ide>
+    <file>MDK-ARM\fir_seq.uvprojx</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_rfft_seq\</path>
+    <name>fir_rfft_seq</name>
+    <ide>iar</ide>
+    <file>ewarm\fir_rfft_seq.ewp</file>
+    <type>compile</type>
+  </configuration>
+
+  <!-- MW Tests -->
+  <configuration>
+    <path>..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_rfft_seq\</path>
+    <name>fir_rfft_seq</name>
+    <ide>keil</ide>
+    <file>MDK-ARM\fir_rfft_seq.uvprojx</file>
+    <type>compile</type>
+  </configuration>
+
+</project>

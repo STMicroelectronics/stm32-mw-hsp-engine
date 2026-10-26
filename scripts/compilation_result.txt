@@ -1,0 +1,68 @@
+
+        *********************************************************************
+        *                                                                   *
+        *              AUTOMATIC COMPILATION + TEST EXECUTION               *
+        *                                                                   *
+        *********************************************************************
+        
+The following subprojects will be validated:
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\biquad_acc\/biquad_acc/iar
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\biquad_acc\/biquad_acc/keil
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\cfft_acc\/cfft_acc/iar
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\cfft_acc\/cfft_acc/keil
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_acc\/fir_acc/iar
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_acc\/fir_acc/keil
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_rfft_seq\/fir_rfft_seq/iar
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_rfft_seq\/fir_rfft_seq/keil
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_seq\/fir_seq/iar
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_seq\/fir_seq/keil
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\rfft_acc\/rfft_acc/iar
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\rfft_acc\/rfft_acc/keil
+..\..\valid\test_stream_buffer/fir_acc/iar
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\biquad_acc\/biquad_acc/iar
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\biquad_acc\/biquad_acc/keil
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\cfft_acc\/cfft_acc/iar
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\cfft_acc\/cfft_acc/keil
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_acc\/fir_acc/iar
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_acc\/fir_acc/keil
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_rfft_seq\/fir_rfft_seq/iar
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_rfft_seq\/fir_rfft_seq/keil
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_seq\/fir_seq/iar
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\fir_seq\/fir_seq/keil
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\rfft_acc\/rfft_acc/iar
+		[COMPILATION OK]
+
+..\..\..\..\..\Projects\NUCLEO-U3C5ZI-Q\Applications\hsp_engine\rfft_acc\/rfft_acc/keil
+		[COMPILATION OK]
+
+..\..\valid\test_stream_buffer/fir_acc/iar
+		[COMPILATION OK]
+
+Number of tests listed:     0
+Number of tests executed:   0
+Number of tests passed:     0
+Number of tests failed:     0
+Number of tests untestable: 0
+jeu. 22 janv. 2026 00:11:43

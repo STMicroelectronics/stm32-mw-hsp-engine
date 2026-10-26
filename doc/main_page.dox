@@ -1,0 +1,152 @@
+/** 
+  * \mainpage HSP Engine Middleware
+  *
+  * \section intro_sec Introduction
+  *  - The Middleware HSP Engine provides an efficient interface to the Hardware Signal Processor (HSP).
+  *    The HSP coprocessor is designed to accelerate or offload signal processing operations commonly used in applications such as signal conditioning, metering, anomaly detections, words recognition…
+  *    The HSP can also support control loop applications oriented to motor control, digital power,….
+  *
+  *  - The HSP is built around a dedicated, high-performance Signal Processor Engine (SPE) capable of operating
+  *    in 32-bit floating point or 8-bit integer modes.
+  *    The SPE executes HSP-specific microcode (also referred to as Firmware), part of which is embedded in private ROM,
+  *    while a second part (FW RAM) must be dynamically loaded into RAM during initialization.
+  *
+  *  - The Middleware HSP Engine provides high level services through a ready to use interface
+  *    based on the HSP HAL Drivers.<br>
+  *    It provides processing APIs using the services offered by the HSP Firmwares which contains processing functions.
+  *
+  *    Refer to the HSP Processing Functions User Manual (UM3360) to find complete description of 
+  *    all processing functions available compatible for the Accelerator mode.
+  *
+  * \section howto_sec How to use
+  * \subsection app_project Application project
+  *   For any kind of Application using the HSP Engine middleware, the IAR, MDK_ARM or CubeIDE project must:
+  *     - integrate the last HSP Firmware RAM available in the common/modules/firmware directory (hsp_fw_ram.c)
+  *     - add the firmware folder in the include path (for hsp_fw_def.h).
+  *     - add the hsp_conf.h file to set some services of the middleware
+  *     - add the hsp_if_conf.h file to link some MW literals with HAL HSP literals
+  *
+  *    Refer to \ref HSP_Engine_Configuration_Table to find all middleware preprocessing directives.
+  *
+  *  \subsubsection config_file Middleware configuration file
+  *    Copy the \a hsp_conf_template.h file template into the project and rename it to \a hsp_conf.h.
+  *    Configure the file as follow:
+  *      - Select a module by setting the related directive "USE_HSP_MODULES" to 1.
+  *      - Enable/Disable the use of HSP memcpy function with the directive USE_HSP_MEMCPY
+  *      - Enable/Disable the synchronisation for Direct Command with the directive USE_HSP_ACC_DIRECT_COMMAND_SYNCHRONOUS
+  *      - Enable/Disable the use of STREAM Buffer with the directive USE_HSP_ENGINE_STREAM_BUFFER
+  *      - Enable/Disable the HSP Performance counter with the directive ENABLE_HSP_PERFORMANCE_MONITOR
+  *      - Define the size of HSP BRAMAB memory region for CNN functions
+  *
+  *  \subsubsection hsp_init Middleware Initialization
+  *    1. Declare a HSP HAL handle and initialize it following the procedure described in the \b HSP \b HAL driver documentation. <br>
+  *    2. Declare a \ref hsp_engine_context_t structure (context of the HSP Engine middleware) in your application to manage the HSP Engine Middleware.
+  *    3. Call HSP_CORE_Init() by passing this context and the pointer to the HSP HAL handle.
+  *
+  *  \subsubsection hsp_callback Middleware Callback registration
+  *    The Application must register its own callbacks (see Register functions in the table below).
+  *
+  *    Callback registration functions:
+  *     - HSP_CORE_RegisterErrorCallback()
+  *     - HSP_CORE_RegisterStreamBufferWriteCpltCallback()
+  *     - HSP_CORE_RegisterStreamBufferReadCpltCallback()
+  *
+  * \subsection hsp_processing  HSP Processing
+  * \subsubsection bram_manager  HSP BRAMAB memory space
+  *    The HSP BRAMAB memory space is a SRAM region dedicated for the HSP peripheral and shared with the CPU.
+  *
+  *    To allocate statically a resource, add the placement section code: "__attribute__((section("HSP_DATA_BRAM")))"
+  *    \code{.c}
+  *      static float fir_coefs[5U]  __attribute__((section("HSP_DATA_BRAM"))) = {
+  *      0.00240166, 0.00483097, 0.00663137, 0.00619702, 0.00217623};
+  *
+  *      static uint32_t pl_call __attribute__((section("HSP_DATA_BRAM"))) = 0U;
+  *   \endcode
+  *
+  *    To allocate dynamically a common resource (samples, counter...), called HSP_BRAM_Malloc()
+  *    \code{.c}
+  *      float32_t *p_my_buffer;
+  *
+  *      p_my_buffer = HSP_BRAM_Malloc(hmw, 5U, HSP_BRAM_ALLOCATION_DEFAULT);
+  *   \endcode
+  *
+  *    To allocate a state buffer for a filter called the \ref HSP_BRAM "HSP_BRAM_MallocStateBuffer_..." function
+  *    related to the type of filter.
+  *    \code{.c}
+  *      uint32_t state_buffer_fir;
+  *      uint32_t state_buffer_biquad;
+  *      ...
+  *
+  *      state_buffer_fir = HSP_BRAM_MallocStateBuffer_Fir(hmw, 5U, 512U, HSP_BRAM_ALLOCATION_DEFAULT);
+  *      state_buffer_biquad = HSP_BRAM_MallocStateBuffer_BiquadCascadeDf1(hmw, 25U, HSP_BRAM_ALLOCATION_DEFAULT);
+  *      ...
+  *   \endcode
+  *
+  * \subsubsection accelerator_mode  Processing in Accelerator Mode
+  *   In Accelerator mode, call directly the processing functions from the modules Direct, DSP and CNN.
+  *   These processing functions are available in the following modules:
+  *         - \b Direct \b Command (\ref HSP_MODULES_DIRECT_COMMAND) <br>
+  *           Set the preprocessing directive \b USE_HSP_ACC_DIRECT_COMMAND_SYNCHRONOUS to enable
+  *           or disable the synchronous mode (see hsp_conf.h file).
+  *           If enabled, the processing functions waits until the processing is terminated.
+  *         - \b DSP (ARM-like API \ref HSP_MODULES_DSP)
+  *         - \b CNN (\ref HSP_MODULES_CNN) <br>
+  *           Configure the constant \b HSP_BRAM_AI_SIZE to allocate a memory region in the HSP BRAMAB
+  *           dedicated for CNN processing (see hsp_conf.h file).
+  *
+  *   All input/output buffers passed as parameter of these functions must be allocated in the HSP BRAMAB memory space
+  *   thank to the HSP BRAM Manager (\ref bram_manager).
+  *
+  * \subsubsection sequencer_mode  Processing in Sequencer Mode
+  *  \paragraph hsp_record_pl Record a processing list
+  *       1. Start the recording with HSP_SEQ_StartRecordPL() by passing an ID in range [0..36]
+  *       2. Call Processing functions defined in \ref HSP_MODULES_PROCLIST "Proclist module"
+  *       3. Stop the recording with HSP_SEQ_StopRecordPL()
+  * 
+  *       Note: to attach a Processing List to a trigger like STREAM Buffer, TRGIN, ADCIN(1), CSEG or HSEG, the Processing
+  *       List must be recorded with the same ID as the HSP Event number in range [1..22] used.
+  *
+  *  \paragraph hsp_attach_pl Attach a Processing List to an event.
+  *     Processing lists having an ID in the range of 1 to 22  can be executed through 4 types of triggers:
+  *       - \b STREAM Buffer interface <br>
+  *         in RX mode, when a data is written in the buffer from a DMA, a peripheral...
+  *         in TX mode, when a data written in the buffer by the SPE and has been read by a DMA, a peripheral...
+  *       - \b TRGIN interface <br>
+  *         Refer to the Reference Manual of the STM32 Device to retrieve the input triggers.
+  *         For example, a trigger could be a DMA Transfer Complete event.
+  *       - \b CSEG interface (1)<br>
+  *         HSP Internal trigger managed by the Application. It allows to schedule the execution of the processing list
+  *         based on its priority level.
+  *         The application must call HSP_SEQ_EVENT_Trig_CSEG() to schedule the Processing List.
+  *       - \b HSEG interface (1)<br>
+  *         As for CSEG, this interface is an HSP Internal trigger managed the SPE.
+  *
+  *   All configured HSP Event, attached to a processing list, must be enabled with HSP_SEQ_EVENT_Enable().
+  *
+  *  (1) The SPE will schedule the execution depending of the HSP Event number that defines the priority level in range from 1 (highest) to 22 (lowest).
+  *
+  *  \paragraph hsp_execute_pl Execute a Processing List.
+  *  Processing lists having an ID in the range of 0 to 37 can be executed through CDEG and HDEG interfaces:
+  *    - CDEG interface is available by the call of HSP_SEQ_RunTask(). It allows the Application to trigger a processing list with the lowest priority.
+  *    - HDEG interface is available by the call of HSP_SEQ_SendEvt() (with HDEG as parameter) inside another Processing List. It allows the SPE to trigger a processing list with the highest priority.
+  *
+  *  Processing lists having an ID in the range of 1 to 22:
+  *    - if attached to CSEG interface, the application must call HSP_SEQ_EVENT_Trig_CSEG() to schedule the execution based on the priority level.
+  *    - if attached to HSEG interface, another processing list must be recorded with the call of the processing function HSP_SEQ_SendEvt() (with HSEG as parameter).
+  *    - if attached to other triggers, there is nothing to do for the Application. The Processing List will be executed on Hardware event.
+  *
+  * \subsubsection hsp_performance HSP Performance
+  *   - To reduce BRAM conflict access shared between CPU and HSP:
+  *         + Enable the Conflict Access Counter HSP_BRAM_EnableConflictAccessCounter()
+  *         + Run your processing sequence and Get the counter value with HSP_BRAM_GetConflictAccessCounter()
+  *         + Change the BRAM Arbitration with HSP_BRAM_SetBandwidthArbitration() to try
+  *           to reduce BRAM conflict access
+  *         + Run your processing sequence a second time and Get the counter value
+  *           with HSP_BRAM_GetConflictAccessCounter()
+  *         + Check if the BRAM Arbitration changes reduce the number of conflict access
+  *
+  *   - To manage the power consumption of HSP blocks call the following APIs:
+  *       + HSP_CORE_EnableSmartClocking() to enable the Smart Clocking of some clocks (Default mode)
+  *       + HSP_CORE_DisableSmartClocking() to disable the Smart Clocking of some clocks (increase the power consumption)
+  *
+  */

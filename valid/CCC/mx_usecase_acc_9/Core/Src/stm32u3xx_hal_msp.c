@@ -1,0 +1,131 @@
+/**
+  ******************************************************************************
+  * @file    stm32u3xx_hal_msp.c
+  * @author  GPM Application Team
+  * @brief   HAL MSP module.
+  *          This file template is located in the HAL folder and should be copied
+  *          to the user folder.
+  *
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2023 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  @verbatim
+ ===============================================================================
+                     ##### How to use this driver #####
+ ===============================================================================
+    [..]
+
+  @endverbatim
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/
+#include "stm32u3xx_hal.h"
+
+/** @addtogroup STM32U3xx_HAL_Driver
+  * @{
+  */
+
+/** @defgroup HAL_MSP HAL MSP module driver
+  * @brief HAL MSP module.
+  * @{
+  */
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+
+/** @defgroup HAL_MSP_Private_Functions HAL MSP Private Functions
+  * @{
+  */
+
+/**
+  * @brief  Initializes the Global MSP.
+  * @retval None
+  */
+void HAL_MspInit(void)
+{
+
+}
+
+/**
+  * @brief  DeInitializes the Global MSP.
+  * @retval None
+  */
+void HAL_MspDeInit(void)
+{
+
+}
+
+/**
+  * @brief  Initialize the HSP MSP.
+  * @retval None
+  */
+void HAL_HSP_MspInit(HAL_HSP_HandleTypeDef *hhsp)
+{
+  if (hhsp->instance == HSP1)
+  {
+    /* USER CODE BEGIN HSP1_MspInit 0 */
+
+    /* USER CODE END HSP1_MspInit 0 */
+
+    /* Peripheral clock enable */
+    __HAL_RCC_HSP1_CLK_ENABLE();
+
+    /* HSP1 interrupt Init */
+    HAL_NVIC_SetPriority(HSP1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(HSP1_IRQn);
+
+    /* USER CODE BEGIN HSP1_MspInit 1 */
+
+    /* USER CODE END HSP1_MspInit 1 */
+  }
+}
+
+
+/**
+  * @brief  DeInitialize the HSP MSP.
+  * @retval None
+  */
+void HAL_HSP_MspDeInit(HAL_HSP_HandleTypeDef *hhsp)
+{
+  if (hhsp->instance == HSP1)
+  {
+    /* USER CODE BEGIN HSP1_MspDeInit 0 */
+
+    /* USER CODE END HSP1_MspDeInit 0 */
+
+    /* Peripheral clock disable */
+    __HAL_RCC_HSP1_CLK_DISABLE();
+
+    /* HSP1 interrupt DeInit */
+    HAL_NVIC_DisableIRQ(HSP1_IRQn);
+
+    /* USER CODE BEGIN HSP1_MspDeInit 1 */
+
+    /* USER CODE END HSP1_MspDeInit 1 */
+  }
+}
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
