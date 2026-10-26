@@ -3,7 +3,7 @@
 
 # Release Notes for
 # <mark>HSP Engine Middleware</mark>
-Copyright &copy; 2025 STMicroelectronics\
+Copyright &copy; 2026 STMicroelectronics\
 
 [![ST logo](_htmresc/st_logo_2020.png)](https://www.st.com)
 
@@ -26,6 +26,31 @@ Here is the list of references to user documents:
 
 
 # Update History
+
+<label for="collapse-section2" aria-hidden="true">__v1.0.1 / 8-June-2026__</label>
+<div>
+## Main Changes
+  - Add Software Security Level file (*<span style="color: #0050b3;">SW_Security_Level.md</span>*)
+
+
+## Contents
+**Firmware ROM v1.1.7**
+  Support by STM32U3C5, STM32U3B5 devices.
+
+   FW RAM version     Comments
+  ----------------   ----------
+    v1.7              First official release
+
+
+## Known Limitations
+  - HSP Plugins not supported
+
+
+## Supported Devices
+  - Support of STM32U3C5x/STM32U3B5xx devices.
+
+
+</div>
 
 <label for="collapse-section1" aria-hidden="true">__v1.0.0 / 21-January-2026__</label>
 <div>
