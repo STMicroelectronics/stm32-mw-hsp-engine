@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>README for HSP Engine Component</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<h1 id="middleware-hsp-engine-component">Middleware HSP Engine Component</h1>
+<p><img src="https://img.shields.io/badge/tag-v2.0.0-brightgreen.svg" alt="tag" /> <a href="https://htmlpreview.github.io/?https://github.com/STMicroelectronics/stm32-mw-hsp-engine/blob/hal2/Release_Notes.html"><img src="https://img.shields.io/badge/release_note-view_html-gold.svg" alt="release note" /></a></p>
+<h2 id="overview">Overview</h2>
+<p>The <strong>HSP Engine</strong> middleware provides an efficient interface to the Hardware Signal Processor (HSP) available on some STM32 microcontrollers. The HSP peripheral accelerates or offloads signal processing operations commonly used in applications such as signal conditioning, metering, anomaly detection and speech recognition. It can also support control-loop applications for motor control and digital power.</p>
+<p>The HSP is built around a dedicated Signal Processor Engine (SPE) able to operate in 32-bit floating point or 8-bit integer modes. The SPE executes HSP-specific microcode (firmware): one part is embedded in a private ROM, the other part (FW RAM) is loaded into RAM at initialization.</p>
+<h2 id="main-features">Main features</h2>
+<ul>
+<li><strong>Accelerator mode</strong>: immediate execution of a single processing function through the HSP Direct Command interface. The processing functions are provided by three libraries:
+<ul>
+<li><strong>Direct library</strong>: math functions (similar to the C math library).</li>
+<li><strong>DSP library</strong>: subset of processing functions using the same prototypes as the Arm CMSIS-DSP library.</li>
+<li><strong>CNN library</strong>: Convolutional Neural Network processing functions.</li>
+</ul></li>
+<li><strong>Sequencer mode</strong>: execution of a sequence of processing functions, called a <em>Processing List</em>, programmed with the HSP Sequencer. A Processing List can be triggered by the CPU or by hardware events (such as a DMA transfer-complete event), and is executed without CPU intervention. The Processing List APIs are organized into the following categories:
+<ul>
+<li>Complex</li>
+<li>Conditional (if-then-else and loops)</li>
+<li>Digital control</li>
+<li>Filter (FIR, IIR, …)</li>
+<li>Matrix</li>
+<li>Scalar (scalar and conversion functions)</li>
+<li>Transform (FFT and DCT)</li>
+<li>Vector</li>
+</ul></li>
+<li><strong>Core services</strong>: initialization, output trigger (TRGO), smart clocking and protection.</li>
+<li><strong>BRAM management</strong>: allocation of resources in the HSP BRAMAB memory region.</li>
+<li><strong>Monitoring services</strong>: performance monitor and timestamp capture.</li>
+<li><strong>Optimized memory copy</strong> (<code>HSP_MEMCPY</code>) with assembly implementations for GCC, IAR and Arm toolchains.</li>
+<li>Support of <strong>STM32CubeMX2</strong> configuration and code generation.</li>
+</ul>
+<h2 id="folder-structure">Folder structure</h2>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Folder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>common/core</code></td>
+<td>HSP Engine core services (initialization, configuration) and BRAM manager.</td>
+</tr>
+<tr class="even">
+<td><code>common/modules</code></td>
+<td>Direct, DSP, CNN and Processing List libraries, and the HSP firmware binaries (<code>firmware/</code>).</td>
+</tr>
+<tr class="odd">
+<td><code>common/monitoring</code></td>
+<td>Services to monitor the HSP.</td>
+</tr>
+<tr class="even">
+<td><code>common/proclist</code></td>
+<td>Services to record and manage Processing Lists.</td>
+</tr>
+<tr class="odd">
+<td><code>common/utilities</code></td>
+<td>HSP Engine utilities (optimized memory copy, …).</td>
+</tr>
+<tr class="even">
+<td><code>interfaces</code></td>
+<td>Low-level interfaces to manage the HSP BRAM allocation (<code>hsp_bram_if</code>) and to drive the HSP peripheral through the HSP HAL driver (<code>hsp_hw_if</code>).</td>
+</tr>
+<tr class="odd">
+<td><code>templates</code></td>
+<td>Application and interface templates (<code>hsp_conf.h</code>, <code>hsp_engine_rsrc_map.h</code>, <code>mx_hsp_engine_app.*</code>, …) to copy and adapt in the application project.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="supported-devices-and-firmware">Supported devices and firmware</h2>
+<p>The HSP firmware ROM version depends on the device series. The firmware RAM binaries are provided under <code>common/modules/firmware/</code> (<code>crom_x_y_z/cram_xx_yy</code>) and are selected according to the device series.</p>
+<h2 id="low-level-drivers">Low-level drivers</h2>
+<p>The HSP Engine relies on the <strong>STM32 HAL2 HSP driver</strong>. The <code>interfaces</code> folder provides ready-to-use implementations that can be adapted to replace the default BRAM management or to connect the HSP Engine to a custom HSP driver.</p>
+<h2 id="configuration">Configuration</h2>
+<p>The HSP Engine is configured at application level through:</p>
+<ul>
+<li><code>hsp_conf.h</code>: selection of the libraries and features (<code>USE_HSP_MODULES_*</code>, <code>USE_HSP_ENGINE_*</code>, timeouts, BRAM size reserved for CNN, …).</li>
+<li><code>hsp_engine_rsrc_map.h</code>: aliases between the application and the HAL driver literals.</li>
+</ul>
+<p>Both files are generated by STM32CubeMX2, or can be created manually starting from the provided templates.</p>
+<h2 id="getting-started">Getting started</h2>
+<ul>
+<li><strong>With STM32CubeMX2</strong>: enable the HSP peripheral, add the <em>HSP Engine</em> middleware, then select the Accelerator mode libraries and the HSP peripheral instance in the HSP Engine panels. STM32CubeMX2 generates <code>hsp_conf.h</code>, <code>hsp_engine_rsrc_map.h</code>, <code>mx_hsp_engine_app.c</code> and <code>mx_hsp_engine_app.h</code>.</li>
+<li><strong>Without STM32CubeMX2</strong>: add the sources of <code>common/core</code>, the selected <code>common/modules</code> libraries, the firmware matching the device series and the <code>interfaces</code> folder to the project. Add the corresponding include paths, provide a single <code>hsp_conf.h</code> and a single <code>hsp_engine_rsrc_map.h</code>, include <code>hsp.h</code> in the application, and call <code>HSP_CORE_Init()</code> before using any service.</li>
+</ul>
+<h2 id="known-limitations">Known limitations</h2>
+<p>See the <a href="Release_Notes.md">Release Notes</a> for the list of known limitations of the current release.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.st.com/resource/en/user_manual/um3360-hsp-processing-functions-on-stm32-mcus-stmicroelectronics.pdf">UM3360: HSP processing functions on STM32 MCUs</a></li>
+<li><a href="https://www.st.com/resource/en/application_note/an6400-how-to-use-the-hsp-for-executing-dsp-and-cnn-operations-on-stm32-mcus-stmicroelectronics.pdf">AN6400: How to use the HSP for executing DSP and CNN operations on STM32 MCUs</a></li>
+</ul>
+</div>
+</div>
+</body>
+</html>
